@@ -1,10 +1,24 @@
 package task03;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
-import java.util.Set;
 
-/**
+/*
+ * <p>Задание 1. Написать класс MathBox, реализующий следующий функционал:</p>
+ *
+ * <p>Конструктор на вход получает массив Number. Элементы не могут повторяться.
+ * Элементы массива внутри объекта раскладываются в подходящую коллекцию (выбрать самостоятельно).</p>
+ * <p>Существует метод summator, возвращающий сумму всех элементов коллекции.
+ * Существует метод splitter, выполняющий поочередное деление всех хранящихся в объекте
+ * элементов на делитель, являющийся аргументом метода. Хранящиеся в объекте данные
+ * полностью заменяются результатами деления.
+ * Необходимо правильно переопределить методы toString, hashCode, equals, чтобы можно
+ * было использовать MathBox для вывода данных на экран и хранение объектов этого класса
+ * в коллекциях (например, hashMap). Выполнение контракта обязательно!
+ * Создать метод, который получает на вход Integer и если такое значение есть в коллекции,
+ * удаляет его.</p>
+ *
  * <p>Задание 3. Доработать классы MathBox и ObjectBox таким образом,
  * чтобы MathBox был наследником ObjectBox. Необходимо сделать такую связь,
  * правильно распределить поля и методы. Функциональность в целом должна
@@ -14,38 +28,23 @@ import java.util.Set;
 /**
  * <p>Class MathBox</p>
  */
-public class MathBox extends ObjectBox {
-    public Number number[];
-    public ArrayList<Number> MathBox;
-
-    public MathBox(java.lang.Object ref) {
-        super(ref);
-    }
-
+public class MathBox extends ObjectBox<Number> {
     /**
-     * <p>The input constructor receives an array of Number. Items cannot be repeated.
-     * Elements of the array inside the object are decomposed into a suitable collection</p>
+     *  Constructor of the MathBox
+      * @param numbers Arrays of Number
      */
-    public ArrayList<Number> MathBox(Number number[]) {
-        if (number == null) {
-            return MathBox = new ArrayList(0);
-        } else {
-            int size = number.length;
-            ArrayList<Number> arrayList = new ArrayList(size);
-            for (int indx = 0; indx < size; indx++) {
-                arrayList.add(number[indx]);
-            }
-            return MathBox = arrayList;
-        }
+    public MathBox(Number numbers[]) {
+        object = new HashSet<>(Arrays.asList(numbers));
     }
 
     /**
      * <p>Return the sum of all the items in the collection</p>
+     *
      * @return Sum it is sum all the items in the collection
      */
     public Number summator() {
         Number sum = 0;
-        for (Number nmb : this.MathBox) {
+        for (Number nmb : this.object) {
             sum = sumNumbers(sum, nmb);
         }
         return sum;
@@ -53,11 +52,12 @@ public class MathBox extends ObjectBox {
 
     /**
      * <p>Sum Numbers two value。It made for coordination of different type</p>
+     *
      * @param nmbA Something values A
      * @param nmbB Something values B
      * @return Sum (first + second) values
      */
-    public static Number sumNumbers(Number nmbA, Number nmbB) {
+    private static Number sumNumbers(Number nmbA, Number nmbB) {
         if (nmbA instanceof Double || nmbB instanceof Double) {
             return nmbA.doubleValue() + nmbB.doubleValue();
         } else if (nmbA instanceof Float || nmbB instanceof Float) {
@@ -77,25 +77,27 @@ public class MathBox extends ObjectBox {
      * <p>Splitter makes the sequential division of all keeps in the object
      * elements per divider that are the value argument.
      * Data kept in the object completely replaced by the results of the division</p>
+     *
      * @param divide divider
      * @return Object completely replaced by the results of the division
      */
     public ArrayList<Number> splitter(Number divide) {
         ArrayList resObj = new ArrayList();
-        for (Number nmb : this.MathBox) {
+        for (Number nmb : this.object) {
             resObj.add(divNumbers(nmb, divide));
         }
-        return this.MathBox = resObj;
+        return (ArrayList<Number>) (this.object = resObj);
     }
 
 
     /**
      * <p>Divide Numbers two value A/B. It made for coordination of different type</p>
+     *
      * @param nmbA Something values A
      * @param nmbB Something values B
      * @return divide (first / second) values
      */
-    public static Number divNumbers(Number nmbA, Number nmbB) {
+    private static Number divNumbers(Number nmbA, Number nmbB) {
         if (nmbA instanceof Double || nmbB instanceof Double) {
             return nmbA.doubleValue() / nmbB.doubleValue();
         } else if (nmbA instanceof Float || nmbB instanceof Float) {
@@ -112,56 +114,54 @@ public class MathBox extends ObjectBox {
     }
 
     /**
-     * <p>Method search duplicated elements in the object</p>
-     * @param number Arrays values
-     * @return if the repeated element (true) else false
-     */
-    private boolean duplicElem(final Number[] number) {
-        Set<Number> checkElem = new HashSet<>();
-        for (Number i : number) {
-            if (checkElem.contains(i)) return true;
-            checkElem.add(i);
-        }
-        return false;
-    }
-
-    /**
      * <p>Override toString</p>
+     *
      * @return MathBox.toString() String
      */
     @Override
     public String toString() {
-        return MathBox.toString();
+        return "MathBox{" +
+                "object=" + object +
+                '}';
     }
 
     /**
      * <p>Returns a hash code value for the object. This method is
      * supported for the benefit of hash tables such as those provided by</p>
+     *
      * @return MathBox.hashCode()
      */
     @Override
     public int hashCode() {
-        return MathBox.hashCode();
+        int hash = 0;
+        for (Number n : object) {
+            hash += n.hashCode();
+        }
+        return hash;
     }
 
     /**
      * <p>Indicates whether some other object is "equal to" this one</p>
-     * @param obj
-     * @return equals(obj)
+     *
+     * @param obj Input object
+     * @return equals(obj) Equals
      */
     @Override
     public boolean equals(Object obj) {
-        return super.equals(obj);
+        if (obj.getClass() != this.getClass()) {
+            return false;
+        }
+        MathBox objectBox = (MathBox) obj;
+        return objectBox.object.containsAll(object) && (objectBox.object.size() == object.size());
     }
 
     /**
      * <p>The method receives an integer as an input, and if such a value is
      * in the collection, it deletes it</p>
+     *
      * @param input Input Integer values
-     * @return MathBox Collection mathbox without input comparing values Integer
      */
-    public ArrayList<Number> deleteIntegerValue(Integer input) {
-        this.MathBox.removeIf(n -> (n == input));
-        return this.MathBox;
+    public void deleteIntegerValue(Integer input) {
+        this.object.removeIf(n -> (n.equals(input)));
     }
 }

@@ -1,14 +1,15 @@
 package task02;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 
 /**
  * Задание 2. Создать класс ObjectBox, который будет хранить коллекцию Object.
- * <p>
  * У класса должен быть метод addObject, добавляющий объект в коллекцию.
- * У класса должен быть метод deleteObject, проверяющий наличие объекта в коллекции и при наличии удаляющий его.
- * Должен быть метод dump, выводящий содержимое коллекции в строку.
+ * У класса должен быть метод deleteObject, проверяющий наличие объекта в коллекции
+ * и при наличии удаляющий его.
+ * Должен быть метод dump, выводящий содержимое коллекции в строку.</p>
  */
 
 /**
@@ -17,13 +18,14 @@ import java.util.Iterator;
  * @param <T>
  */
 public class ObjectBox<T> {
-    private T ref;
+    protected Collection<T> object;
 
-    public ObjectBox(T ref) {
-        this.ref = ref;
+    /**
+     * Constructor of the ObjectBox
+     */
+    public ObjectBox(){
+        object = new ArrayList();
     }
-
-    public ArrayList<Number> Object = new ArrayList();
 
     /**
      * <p>The addObject method that adds an object to the collection.</p>
@@ -31,22 +33,19 @@ public class ObjectBox<T> {
      * @param obj Input object
      * @return this.ObjectBox Modified collection
      */
-    public ArrayList<Number> addObject(Number obj) {
-        Object.add(synchNumbers(obj));
-        return Object;
+    public Collection<T> addObject(Number obj) {
+        object.add((T) synchNumbers(obj));
+        return this.object;
     }
-
 
     /**
      * Method that checks for an object in the collection,
      * if is,then deletes it.
      *
      * @param obj Input object
-     * @return this.ObjectBox Modified collection
      */
-    public ArrayList<Number> deleteObject(Number obj) {
-        Object.removeIf(n -> (n == obj));
-        return this.Object = Object;
+    public void deleteObject(Number obj) {
+        object.removeIf(n -> (n == obj));
     }
 
     /**
@@ -55,19 +54,17 @@ public class ObjectBox<T> {
      * @return collectToString Content collection to String
      */
     public String dump() {
-        String curString = "";
-        Iterator<Number> iterator = this.Object.iterator();
+        StringBuilder curString = new StringBuilder();
+        Iterator<Number> iterator = (Iterator<Number>) this.object.iterator();
         while (iterator.hasNext()) {
             Number nextNumber = iterator.next();
-            if(this.Object.size() == 1)
-            {
-                curString += synchNumbers(nextNumber).toString();
-            }
-            else{
-                curString += synchNumbers(nextNumber).toString() + " ";
+            if (this.object.size() == 1) {
+                curString.append(synchNumbers(nextNumber).toString());
+            } else {
+                curString.append(synchNumbers(nextNumber).toString()).append(" ");
             }
         }
-        return curString;
+        return curString.toString();
     }
 
     /**
@@ -76,7 +73,7 @@ public class ObjectBox<T> {
      * @param nmbA Something values A
      * @return Coordination values
      */
-    public static Number synchNumbers(Number nmbA) {
+    private static Number synchNumbers(Number nmbA) {
         if (nmbA instanceof Double) {
             return nmbA.doubleValue();
         } else if (nmbA instanceof Float) {
@@ -99,7 +96,7 @@ public class ObjectBox<T> {
     @Override
     public String toString() {
         return "ObjectBox{" +
-                "Object=" + Object +
+                "object=" + object +
                 '}';
     }
-};
+}

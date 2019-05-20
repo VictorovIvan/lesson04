@@ -1,32 +1,28 @@
-//import task01.MathBox;
-//import task02.ObjectBox;
 import task03.*;
 
-import java.util.ArrayList;
-
 public class Test {
+    
+
     public static void main(String[] args) {
         int lengthArray = 10;
         Integer[] someArray = new Integer[lengthArray];
-        ArrayList<Number> someCollectn;
+        MathBox someCollection;
         Number numberSplitter=  2;
         Integer inputInteger = 4;
         Integer someObject = 4;
-        ObjectBox<Integer>someObjectBox = new ObjectBox<>(someObject);
+        ObjectBox<Integer>someObjectBox = new ObjectBox<>();
 
-        for (int i = 0; i < lengthArray; i++) {
-            someArray[i]= i;
+        for (int index = 0; index < lengthArray; index++) {
+            someArray[index]= index;
         }
-
-        MathBox mathBoxTest = new MathBox(someObject);
+        
         System.out.println("Задание №1:");
-        someCollectn = mathBoxTest.MathBox(someArray);
-        System.out.println(someCollectn.toString());
-        System.out.println(mathBoxTest.summator());
-        someCollectn = mathBoxTest.splitter(numberSplitter);
-        System.out.println(someCollectn.toString());
-        mathBoxTest.deleteIntegerValue(inputInteger);
-        System.out.println(someCollectn.toString());
+        someCollection = new MathBox(someArray);
+        System.out.println(someCollection.toString());
+        System.out.println(someCollection.summator());
+        System.out.println(someCollection.splitter(numberSplitter).toString());
+        someCollection.deleteIntegerValue(inputInteger);
+        System.out.println(someCollection.toString());
 
         System.out.println("Задание №2:");
         someObjectBox.addObject(someObject);
